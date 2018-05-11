@@ -1,0 +1,67 @@
+JAVA --> enviar consultas --> MySQL
+
+botones --> programacion --> codigo para enviar una consulta --> malo,
+
+Conexion --> conectar --> enviar consultas
+
+Connection --> conectar
+	-> java --> cualquier motor --> URL conexión
+
+	jdbc:mysql/localhost/procon?user=root&pass=123456
+Statement  --> enviar las consultas o ejecutarlas
+ResultSet  --> Procesar un select --> CALL proc
+
+
+
+consultas --> 	
+	1.- no retornan datos --> insert, update, delete
+	2.- Retornar --> select, procedures, view
+
+
+	conexion --> 
+		public 2 métodos funciones --> void , ResultSet
+
+		public desconectar();
+
+		insert, delete, update --> ejecutar, cerrar
+		select --> ejecutar, retornar rs
+
+
+
+GUI --> Data.java --> Conexion --> MySQL 
+
+CALL x()
+
+crearX(); --> CALL X()
+
+
+
+GUI --> Botón eliminar --> d.eliminar(1)
+
+public void eliminar(int id){
+    ejecutar("CALL eliminar(2)")
+}
+
+Tiempo de mantenimiento!
+
+
+Data --> TODOS los métodos para cambiar la BD
+
+
+los más fáciles son los insert, update, delete
+lo más "peluo" select --> procedimientos que tengan select
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

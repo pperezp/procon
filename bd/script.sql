@@ -14,9 +14,11 @@ CREATE TABLE telefono(
     numero VARCHAR(20),
     fk_contacto INT,
 	PRIMARY KEY(id),
-    FOREIGN KEY(fk_contacto) REFERENCES contacto(id)
+    FOREIGN KEY(fk_contacto) REFERENCES contacto(id) 
+    ON DELETE CASCADE
 );
 
 SELECT * FROM contacto;
 SELECT * FROM telefono;
 
+DROP DATABASE procon;

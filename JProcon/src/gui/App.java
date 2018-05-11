@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import model.bd.Conexion;
 
 public class App extends javax.swing.JFrame {
 
@@ -255,6 +256,7 @@ public class App extends javax.swing.JFrame {
         formContacto.setLocationRelativeTo(null);
         formContacto.setVisible(true);
         txtNombre.requestFocus();
+        
     }//GEN-LAST:event_miCrearContactoActionPerformed
 
     private void miSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSalirActionPerformed

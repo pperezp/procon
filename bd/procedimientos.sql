@@ -82,6 +82,14 @@ CREATE PROCEDURE editarContacto(
 END $$
 DELIMITER ;
 
+/*Procedimiento para eliminar un contacto*/
+DELIMITER $$
+CREATE PROCEDURE eliminarContacto(idContacto INT)
+BEGIN
+	DELETE FROM contacto WHERE id = idContacto;
+END $$
+DELIMITER ;
+
 /*Test de procedimientos*/
 CALL crearContacto('Lissette Escobar', 'lissette.er@gmail.com','+56911223388','+56922335577');
 CALL buscarContacto('lis');
@@ -96,7 +104,11 @@ CALL editarContacto(
     3,
     4
 );
+CALL eliminarContacto(1);
 
+/*Listado de procedimientos*/
+SHOW PROCEDURE STATUS WHERE Db = 'procon';
+/*Listado de procedimientos*/
 
 /*Eliminar un procedimiento*/
 DROP PROCEDURE crearContacto;
@@ -104,3 +116,4 @@ DROP PROCEDURE buscarContacto;
 DROP PROCEDURE buscarTelefonos;
 DROP PROCEDURE mostrarContactos;
 DROP PROCEDURE editarContacto;
+DROP PROCEDURE eliminarContacto;
