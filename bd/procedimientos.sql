@@ -22,7 +22,7 @@ DELIMITER $$
 CREATE PROCEDURE buscarContacto(texto VARCHAR(100))
 BEGIN
 	SELECT
-		nombre
+		id, nombre, correo
 	FROM
 		contacto
 	WHERE
@@ -92,7 +92,7 @@ DELIMITER ;
 
 /*Test de procedimientos*/
 CALL crearContacto('Lissette Escobar', 'lissette.er@gmail.com','+56911223388','+56922335577');
-CALL buscarContacto('lis');
+CALL buscarContacto('pat');
 CALL buscarTelefonos(1);
 CALL mostrarContactos();
 CALL editarContacto(
@@ -117,3 +117,9 @@ DROP PROCEDURE buscarTelefonos;
 DROP PROCEDURE mostrarContactos;
 DROP PROCEDURE editarContacto;
 DROP PROCEDURE eliminarContacto;
+
+
+
+
+
+

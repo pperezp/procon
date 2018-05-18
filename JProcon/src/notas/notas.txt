@@ -56,9 +56,33 @@ lo más "peluo" select --> procedimientos que tengan select
 
 
 
+17 de mayo de 2018:
+    - INSERT, DELETE, UPDATE --> papa
+    - SELECT --> papa --> más pasos
+        1.- Analizar el resultado de la consulta en MySQL
+            En nuestro caso, el procedimiento buscarContacto('pat')
+            arroja los campos id, nombre, correo
+        2.- Existe alguna clase Java que permita guardar esos datos?
+            en el caso que la respuesta sea no, tu creas una clase
+            que soporte esos campos. En nuestro caso, existe la clase
+            Contacto
+        3.- Crear un método en data, que retorne una lista de ese tipo (Contacto)
+
+            public List<Contacto> buscarContacto(String texto){
+            
+            }
 
 
 
+Función o método --> tres partes --> 
+    Un trozo de codigo con un nombre
+    
+    "acceso" "tipo de retorno" "nombre"(parametros){}
+
+    acceso, se dice que es publico cuando ese método se pueda
+    acceder desde otra clase
+
+    
 
 
 

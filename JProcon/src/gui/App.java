@@ -2,14 +2,21 @@ package gui;
 
 import java.awt.Image;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import model.bd.Conexion;
+import model.Data;
 
 public class App extends javax.swing.JFrame {
+    private Data d; // siempre acá
 
     private final boolean DEBUG = true;
     
+    /**
+     * Constructor de la aplicación
+     */
     public App() {
         initComponents();
         setLocationRelativeTo(null);
@@ -17,6 +24,7 @@ public class App extends javax.swing.JFrame {
         
         cambiarIcono();
         initVentanas();
+        d = new Data(); // siempre acá
     }
 
   
@@ -136,6 +144,11 @@ public class App extends javax.swing.JFrame {
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/iconos/actualizar.png"))); // NOI18N
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/iconos/crear.png"))); // NOI18N
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/iconos/limpiar.png"))); // NOI18N
 
@@ -271,6 +284,32 @@ public class App extends javax.swing.JFrame {
         // quizas en algún futuro, limpiar el formulario
         formContacto.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // Rescatar datos del formulario
+        String nombre, correo, tel1, tel2;
+        
+        nombre = txtNombre.getText();
+        correo = txtNomCorreo.getText() + "@" + txtDominioCorreo.getSelectedItem().toString().trim();
+        tel1 = txtNum1.getText();
+        tel2 = txtNum2.getText();
+        
+        try {
+            d.crearContacto(nombre, correo, tel1, tel2);
+            
+            /*Limpiamos el formulario*/
+            txtNombre.setText("");
+            txtNomCorreo.setText("");
+            txtDominioCorreo.setSelectedIndex(0);
+            txtNum1.setText("");
+            txtNum2.setText("");
+            
+            txtNombre.requestFocus();
+            JOptionPane.showMessageDialog(formContacto, "Contacto creado!");
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(formContacto, "Error: "+ex.getMessage());
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
    
     public static void main(String args[]) {

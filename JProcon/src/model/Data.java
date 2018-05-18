@@ -1,12 +1,13 @@
 package model;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 import model.bd.Conexion;
 
 public class Data {
-    private Conexion con; 
+    private final Conexion con; // Constante --> no cambia
     
     public Data(){
         con = new Conexion();
@@ -24,15 +25,74 @@ public class Data {
         con.ejecutar("CALL eliminarContacto('"+idContacto+"')");
     }
     
-    public static void main(String[] args) {
-        try {
-            Data d = new Data();
+    /*Recuerda que este método llama al procedimiento
+    buscarContactos()*/
+    public List<Contacto> getContactos(String texto) throws ClassNotFoundException, SQLException{
+        // creo una lista de contactos vacía
+        List<Contacto> lista = new ArrayList<>(); 
+        String query = "CALL buscarContacto('"+texto+"')";
+        ResultSet rs = con.ejecutarSelect(query);
+        
+        while(/*existan frutas*/rs.next()){ // --> registros
+            //sacar una bolsa --bolsa --> Contacto 
+            Contacto c = new Contacto();
             
-            d.crearContacto("Pato Pérez", "patodeath@gmail.com", "112233", "445566");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+            //tomar y poner una manzana en la bolsa --> id
+            c.id = rs.getInt(1);
+            
+            //tomar y poner una pera en la bolsa    --> nombre
+            c.nombre = rs.getString(2);
+            
+            //tomar y poner un platano en la bolsa  --> correo
+            c.correo = rs.getString(3);
+            
+            // pones la bolsa en el canasto        --> canasto --> lista
+            lista.add(c);
         }
+        
+        con.desconectar();
+        return lista;
     }
+    
+    public List<ContactoTelefono> getTelefonos(int idContacto) throws ClassNotFoundException, SQLException{
+        List<ContactoTelefono> lista = new ArrayList<>();
+        String query = "CALL buscarTelefonos('"+idContacto+"');";
+        ResultSet rs = con.ejecutarSelect(query);
+        
+        while(rs.next()){ 
+            ContactoTelefono c = new ContactoTelefono();
+            
+            c.id = rs.getInt(1);
+            c.nombre = rs.getString(2);
+            c.correo = rs.getString(3);
+            c.telefono = rs.getString(4);
+           
+            lista.add(c);
+        }
+        
+        con.desconectar();
+        return lista;
+    }
+    
+    public List<Contacto> getContactos() throws ClassNotFoundException, SQLException{
+        // OJO -->OJOOO!!!!!!!! List y ArrayList --> java.util NOOOO en java.awt!!!!!!!!!!!! porfa! chao
+        List<Contacto> lista = new ArrayList<>();
+        String query = "CALL mostrarContactos()";
+        ResultSet rs = con.ejecutarSelect(query);
+        
+        while(rs.next()){ 
+            Contacto c = new Contacto();
+            
+            c.id = rs.getInt(1);
+            c.nombre = rs.getString(2);
+            c.correo = rs.getString(3);
+           
+            lista.add(c);
+        }
+        
+        con.desconectar();
+        
+        return lista;
+    }
+    
 }
