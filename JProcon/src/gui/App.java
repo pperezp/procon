@@ -1,19 +1,24 @@
 package gui;
 
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import model.Contacto;
 import model.Data;
+import model.listModels.LMContacto;
 
 public class App extends javax.swing.JFrame {
+
     private Data d; // siempre acá
 
     private final boolean DEBUG = true;
-    
+
     /**
      * Constructor de la aplicación
      */
@@ -21,13 +26,29 @@ public class App extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Procon v0.1");
-        
+
         cambiarIcono();
         initVentanas();
         d = new Data(); // siempre acá
+        
+        txtDominioCorreo.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    txtNum1.requestFocus();
+                }
+            }
+        });
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -45,7 +66,7 @@ public class App extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtDominioCorreo = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaGrafica = new javax.swing.JList<>();
+        listaGrafica = new javax.swing.JList();
         txtBuscar = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
@@ -65,6 +86,18 @@ public class App extends javax.swing.JFrame {
 
         jLabel3.setText("Correo:");
 
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNombreKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreKeyReleased(evt);
+            }
+        });
+
         jLabel4.setText("Telefono 1:");
 
         jLabel5.setText("Telefono 2:");
@@ -74,18 +107,42 @@ public class App extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtNum1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNum1KeyReleased(evt);
+            }
+        });
 
         try {
             txtNum2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("+569-########")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtNum2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNum2KeyReleased(evt);
+            }
+        });
+
+        txtNomCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNomCorreoKeyReleased(evt);
+            }
+        });
 
         jLabel6.setText("@");
 
         txtDominioCorreo.setEditable(true);
         txtDominioCorreo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         txtDominioCorreo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "gmail.com", "live.es", "live.com", "hotmail.com", "outlook.com" }));
+        txtDominioCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDominioCorreoKeyTyped(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDominioCorreoKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -138,8 +195,24 @@ public class App extends javax.swing.JFrame {
         jScrollPane1.setViewportView(listaGrafica);
 
         txtBuscar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/iconos/delete.png"))); // NOI18N
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/iconos/actualizar.png"))); // NOI18N
 
@@ -151,6 +224,11 @@ public class App extends javax.swing.JFrame {
         });
 
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/iconos/limpiar.png"))); // NOI18N
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/iconos/volver.png"))); // NOI18N
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -266,10 +344,15 @@ public class App extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void miCrearContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCrearContactoActionPerformed
-        formContacto.setLocationRelativeTo(null);
-        formContacto.setVisible(true);
-        txtNombre.requestFocus();
-        
+        try {
+            listarContactos();
+
+            formContacto.setLocationRelativeTo(null);
+            formContacto.setVisible(true);
+            txtNombre.requestFocus();
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(formContacto, "Error: " + ex.getMessage());
+        }
     }//GEN-LAST:event_miCrearContactoActionPerformed
 
     private void miSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSalirActionPerformed
@@ -286,34 +369,94 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Rescatar datos del formulario
-        String nombre, correo, tel1, tel2;
-        
-        nombre = txtNombre.getText();
-        correo = txtNomCorreo.getText() + "@" + txtDominioCorreo.getSelectedItem().toString().trim();
-        tel1 = txtNum1.getText();
-        tel2 = txtNum2.getText();
-        
-        try {
-            d.crearContacto(nombre, correo, tel1, tel2);
-            
-            /*Limpiamos el formulario*/
-            txtNombre.setText("");
-            txtNomCorreo.setText("");
-            txtDominioCorreo.setSelectedIndex(0);
-            txtNum1.setText("");
-            txtNum2.setText("");
-            
-            txtNombre.requestFocus();
-            JOptionPane.showMessageDialog(formContacto, "Contacto creado!");
-        } catch (ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(formContacto, "Error: "+ex.getMessage());
-        }
+        registrarContacto();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-   
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        limpiarFormulario();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+
+        Contacto c = (Contacto) listaGrafica.getSelectedValue();
+
+        if (JOptionPane.showConfirmDialog(formContacto, "¿Desea eliminar a " + c.nombre + "?") == JOptionPane.YES_OPTION) {
+            try {
+
+                d.eliminarContacto(c.id);
+                listarContactos();
+
+                JOptionPane.showMessageDialog(formContacto, "Contacto eliminado!");
+            } catch (ClassNotFoundException | SQLException ex) {
+                JOptionPane.showMessageDialog(formContacto, "Error: " + ex.getMessage());
+            }
+        }
+
+
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        try {
+            String texto = txtBuscar.getText();
+
+            LMContacto model = new LMContacto(d.getContactos(texto));
+            listaGrafica.setModel(model);
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(formContacto, "Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_txtBuscarKeyReleased
+
+    private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
+//        System.out.println("KEYPRESS");
+    }//GEN-LAST:event_txtBuscarKeyPressed
+
+    private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
+//        System.out.println("KEYTYPED");
+    }//GEN-LAST:event_txtBuscarKeyTyped
+
+    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtNomCorreo.requestFocus();
+        }
+    }//GEN-LAST:event_txtNombreKeyReleased
+
+    private void txtNomCorreoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomCorreoKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtDominioCorreo.requestFocus();
+        }
+    }//GEN-LAST:event_txtNomCorreoKeyReleased
+
+    private void txtDominioCorreoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDominioCorreoKeyReleased
+        
+        
+    }//GEN-LAST:event_txtDominioCorreoKeyReleased
+
+    private void txtNum1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNum1KeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtNum2.requestFocus();
+        }
+    }//GEN-LAST:event_txtNum1KeyReleased
+
+    private void txtNum2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNum2KeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            registrarContacto();
+        }
+    }//GEN-LAST:event_txtNum2KeyReleased
+
+    private void txtDominioCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDominioCorreoKeyTyped
+        
+    }//GEN-LAST:event_txtDominioCorreoKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreKeyPressed
+
     public static void main(String args[]) {
-       
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new App().setVisible(true);
@@ -339,7 +482,7 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JList<String> listaGrafica;
+    private javax.swing.JList listaGrafica;
     private javax.swing.JMenuItem miCrearContacto;
     private javax.swing.JMenuItem miSalir;
     private javax.swing.JTextField txtBuscar;
@@ -352,27 +495,64 @@ public class App extends javax.swing.JFrame {
 
     private void cambiarIcono() {
         String ruta = "/gui/iconos/contacto_128.png";
-        
+
         URL url = getClass().getResource(ruta);
-        
+
         ImageIcon imageIcon = new ImageIcon(url);
-        
+
         Image image = imageIcon.getImage();
-        
+
         setIconImage(image);
         formContacto.setIconImage(image);
     }
 
     private void initVentanas() {
         formContacto.setTitle("Crear contacto");
-        formContacto.setBounds(0,0,800,600);
+        formContacto.setBounds(0, 0, 800, 600);
     }
-    
-    private void salir(){
-        if(DEBUG){
+
+    private void salir() {
+        if (DEBUG) {
             System.exit(0);
-        }else if (JOptionPane.showConfirmDialog(this, "¿Desea salir?") == JOptionPane.YES_OPTION) {
+        } else if (JOptionPane.showConfirmDialog(this, "¿Desea salir?") == JOptionPane.YES_OPTION) {
             System.exit(0);
+        }
+    }
+
+    private void listarContactos() throws ClassNotFoundException, SQLException {
+        LMContacto model = new LMContacto(d.getContactos());
+        listaGrafica.setModel(model);
+    }
+
+    private void limpiarFormulario() {
+        /*Limpiamos el formulario*/
+        txtNombre.setText("");
+        txtNomCorreo.setText("");
+        txtDominioCorreo.setSelectedIndex(0);
+        txtNum1.setText("");
+        txtNum2.setText("");
+
+        txtNombre.requestFocus();
+    }
+
+    private void registrarContacto() {
+         // Rescatar datos del formulario
+        String nombre, correo, tel1, tel2;
+
+        nombre = txtNombre.getText();
+        correo = txtNomCorreo.getText() + "@" + txtDominioCorreo.getSelectedItem().toString().trim();
+        tel1 = txtNum1.getText();
+        tel2 = txtNum2.getText();
+
+        try {
+            d.crearContacto(nombre, correo, tel1, tel2);
+
+            limpiarFormulario();
+            listarContactos();
+
+            JOptionPane.showMessageDialog(formContacto, "Contacto creado!");
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(formContacto, "Error: " + ex.getMessage());
         }
     }
 }

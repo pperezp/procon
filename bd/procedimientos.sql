@@ -93,7 +93,7 @@ DELIMITER ;
 /*Test de procedimientos*/
 CALL crearContacto('Lissette Escobar', 'lissette.er@gmail.com','+56911223388','+56922335577');
 CALL buscarContacto('pat');
-CALL buscarTelefonos(1);
+CALL buscarTelefonos(4);
 CALL mostrarContactos();
 CALL editarContacto(
 	2,
