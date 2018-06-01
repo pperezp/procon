@@ -6,5 +6,6 @@ package model;
  * @author prez
  */
 public class ContactoTelefono extends Contacto{
-    public String telefono;
+    public String telefonos;
+    public String idsTelefonos;
 }

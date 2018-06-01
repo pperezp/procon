@@ -17,7 +17,7 @@ public class Data {
         con.ejecutar("CALL crearContacto('"+nombre+"','"+correo+"','"+tel1+"','"+tel2+"')");
     }
     
-    public void editarContacto(int idContacto, String nombre, String correo, String tel1, String tel2, int idTel1, int idTel2) throws ClassNotFoundException, SQLException{
+    public void modificarContacto(int idContacto, String nombre, String correo, String tel1, String tel2, String idTel1, String idTel2) throws ClassNotFoundException, SQLException{
         con.ejecutar("CALL editarContacto('"+idContacto+"','"+nombre+"','"+correo+"','"+tel1+"','"+tel2+"','"+idTel1+"','"+idTel2+"');");
     }
     
@@ -54,24 +54,21 @@ public class Data {
         return lista;
     }
     
-    public List<ContactoTelefono> getTelefonos(int idContacto) throws ClassNotFoundException, SQLException{
-        List<ContactoTelefono> lista = new ArrayList<>();
-        String query = "CALL buscarTelefonos('"+idContacto+"');";
+    public ContactoTelefono getInfoById(int idContacto) throws ClassNotFoundException, SQLException{
+        String query = "CALL getInfoById('"+idContacto+"');";
         ResultSet rs = con.ejecutarSelect(query);
         
+        ContactoTelefono c = new ContactoTelefono();
         while(rs.next()){ 
-            ContactoTelefono c = new ContactoTelefono();
-            
             c.id = rs.getInt(1);
             c.nombre = rs.getString(2);
             c.correo = rs.getString(3);
-            c.telefono = rs.getString(4);
-           
-            lista.add(c);
+            c.idsTelefonos = rs.getString(4);
+            c.telefonos = rs.getString(5);
         }
         
         con.desconectar();
-        return lista;
+        return c;
     }
     
     public List<Contacto> getContactos() throws ClassNotFoundException, SQLException{

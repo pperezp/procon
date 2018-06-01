@@ -33,13 +33,14 @@ DELIMITER ;
 
 /*Procedimiento para buscar los telefonos según ID*/
 DELIMITER $$
-CREATE PROCEDURE buscarTelefonos(idContacto INT)
+CREATE PROCEDURE getInfoById(idContacto INT)
 BEGIN
 	SELECT 
 		c.id,
 		c.nombre as 'contacto',
 		c.correo,
-		t.numero as 'telefono'
+		GROUP_CONCAT(t.id SEPARATOR ',') as 'ids',
+		GROUP_CONCAT(t.numero SEPARATOR ',') as 'telefono'
 	FROM 
 		telefono t
 		INNER JOIN contacto c ON c.id = t.fk_contacto
@@ -93,7 +94,7 @@ DELIMITER ;
 /*Test de procedimientos*/
 CALL crearContacto('Lissette Escobar', 'lissette.er@gmail.com','+56911223388','+56922335577');
 CALL buscarContacto('pat');
-CALL buscarTelefonos(4);
+CALL getInfoById(4);
 CALL mostrarContactos();
 CALL editarContacto(
 	2,
@@ -113,13 +114,7 @@ SHOW PROCEDURE STATUS WHERE Db = 'procon';
 /*Eliminar un procedimiento*/
 DROP PROCEDURE crearContacto;
 DROP PROCEDURE buscarContacto;
-DROP PROCEDURE buscarTelefonos;
+DROP PROCEDURE getInfoById;
 DROP PROCEDURE mostrarContactos;
 DROP PROCEDURE editarContacto;
 DROP PROCEDURE eliminarContacto;
-
-
-
-
-
-
